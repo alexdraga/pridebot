@@ -1,13 +1,13 @@
-__author__ = 'a_draga'
 # -*- coding: utf-8 -*-
+__author__ = 'a_draga'
 import sys
 from selenium import webdriver
 import string
 import time, random
-from settings import SETTINGS
+from default_settings import SETTINGS
 
 #Exceptions:
-from httplib import BadStatusLine, CannotSendRequest
+from httplib import BadStatusLine
 from selenium.common.exceptions import InvalidElementStateException, NoSuchElementException
 
 

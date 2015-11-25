@@ -52,10 +52,10 @@ class DBDriver(object):
                                    ") WHERE " + field + " like'" + self.prepare_multi_letter(
                     splitted_letters.keys()[key], splitted_letters[splitted_letters.keys()[key]]) + "'"
             if length is not None:
-                if length=='0' or length=='=0':
-                    low_level_script+=" AND LEN(word)="+str(len(letters))
+                if length == '0' or length == '=0':
+                    low_level_script += " AND LEN(word)=" + str(len(letters))
                 else:
-                    low_level_script+=" AND LEN(word)"+length
+                    low_level_script += " AND LEN(word)" + length
             return self.perform_search(low_level_script)
 
     def perform_strict_order(self, letters, length=None, table='words', field='word'):
@@ -63,8 +63,8 @@ class DBDriver(object):
             low_level_script = "SELECT " + field + " FROM " + table + " WHERE " + field + " like'" + \
                                self.prepare_strict_order(letters) + "'"
             if length is not None:
-                if length=='0' or length=='=0':
-                    low_level_script+=" AND LEN(word)="+str(len(letters))
+                if length == '0' or length == '=0':
+                    low_level_script += " AND LEN(word)=" + str(len(letters))
                 else:
-                    low_level_script+=" AND LEN(word)"+length
+                    low_level_script += " AND LEN(word)" + length
             return self.perform_search(low_level_script)

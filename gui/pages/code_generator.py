@@ -6,6 +6,7 @@ import re
 
 from config.default_settings import SETTINGS
 from gui.helpers.gui_helpers import center_window
+from config.localization import BUTTONS, LANGUAGE
 
 
 __author__ = 'a_draga'
@@ -65,14 +66,18 @@ class GenerateCodesForm(object):
         self.preview_box.config(yscrollcommand=self.scroll_bar.set)
         self.preview_box.pack(side=Tkinter.TOP)
 
-        upper_latin_button = Tkinter.Button(self.root, text='Добавить ЛАТИНИЦУ', command=self.add_upper_latin)
+        upper_latin_button = Tkinter.Button(self.root, text=BUTTONS['add_latin'][LANGUAGE],
+                                            command=self.add_upper_latin)
         # lower_latin_button = Tkinter.Button(self.root, text='Add Lower latin', command=self.add_lower_latin)
-        upper_cyrillic_button = Tkinter.Button(self.root, text='Добавить КИРИЛЛИЦУ', command=self.add_upper_cyrillic)
+        upper_cyrillic_button = Tkinter.Button(self.root, text=BUTTONS['add_cyrillic'][LANGUAGE],
+                                               command=self.add_upper_cyrillic)
         # lower_cyrillic_button = Tkinter.Button(self.root, text='Add Lower cyrillic', command=self.add_lower_cyrillic)
-        upper_ukrainian_button = Tkinter.Button(self.root, text='Добавить УКРАИНСКИЕ', command=self.add_upper_ukrainian)
+        upper_ukrainian_button = Tkinter.Button(self.root, text=BUTTONS['add_ukrainian'][LANGUAGE],
+                                                command=self.add_upper_ukrainian)
         # lower_ukrainian_button = Tkinter.Button(self.root, text='Add Lower ukrainian', command=self.add_lower_ukrainian)
-        digits_button = Tkinter.Button(self.root, text='Добавить ЦИФРЫ', command=self.add_digits)
-        punctuation_latin_button = Tkinter.Button(self.root, text='Добавить ПУНКТУАЦИЮ', command=self.add_printable)
+        digits_button = Tkinter.Button(self.root, text=BUTTONS['add_digits'][LANGUAGE], command=self.add_digits)
+        punctuation_latin_button = Tkinter.Button(self.root, text=BUTTONS['add_symbols'][LANGUAGE],
+                                                  command=self.add_printable)
 
         upper_latin_button.pack(side=Tkinter.TOP, fill=Tkinter.X)
         # lower_latin_button.pack(side=Tkinter.TOP, fill=Tkinter.X)

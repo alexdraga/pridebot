@@ -4,4 +4,3 @@ __author__ = 'a_draga'
 from gui.pages.main import MainForm
 
 main_form = MainForm()
-main_form.write_config()

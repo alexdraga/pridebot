@@ -9,7 +9,7 @@ from selenium import webdriver
 from config.default_settings import SETTINGS
 
 
-#Exceptions:
+# Exceptions:
 from httplib import BadStatusLine
 from selenium.common.exceptions import InvalidElementStateException, NoSuchElementException
 
@@ -35,26 +35,26 @@ class QuestUA(object):
         if login:
             print u' Пробуем залогиниться'
             try:
-                #Waiting for login field to appear and sending login to it
+                # Waiting for login field to appear and sending login to it
                 self.wait_for_field([SETTINGS['login_locator'][0]])
                 by_value_login = self.parse_locator_line(SETTINGS['login_locator'][0])
                 login_field = self.find_element_by(by_value_login['by'], by_value_login['value'])
                 login_field.send_keys(login)
 
-                #Waiting for password field to appear and sending password to it
+                # Waiting for password field to appear and sending password to it
                 self.wait_for_field([SETTINGS['password_locator'][0]])
                 by_value_password = self.parse_locator_line(SETTINGS['password_locator'][0])
                 password_field = self.find_element_by(by_value_password['by'], by_value_password['value'])
                 password = SETTINGS['password'][0].decode('utf-8')
                 password_field.send_keys(password)
-                #Submitting input
+                # Submitting input
                 try:
                     password_field.submit()
                 except NoSuchElementException:
-                    #For agiotage game
+                    # For agiotage game
                     button = self.find_element_by('id', 'submit')
                     button.click()
-                #If no errors appeared - returning True, else - we are going to terminate the program
+                # If no errors appeared - returning True, else - we are going to terminate the program
                 return True
             except BadStatusLine:
                 pass
@@ -62,15 +62,15 @@ class QuestUA(object):
             return True
 
     def open_firefox(self):
-            print u' Открываем Firefox...'
-            #Creating webdriver for Firefox
-            self.driver = webdriver.Firefox()
+        print u' Открываем Firefox...'
+        # Creating webdriver for Firefox
+        self.driver = webdriver.Firefox()
 
     def open_url(self, url):
         try:
-            #Opening game url
+            # Opening game url
             self.driver.get(url)
-            #If no errors appeared - returning True, else - we are going to terminate the program
+            # If no errors appeared - returning True, else - we are going to terminate the program
             return True
         except BadStatusLine:
             pass
@@ -80,9 +80,9 @@ class QuestUA(object):
             print u' Открываем страницу логина'
             self.open_firefox()
             if self.open_url(SETTINGS['login_url'][0]):
-                #If url was opened - we can try to perform login
+                # If url was opened - we can try to perform login
                 self.is_url_opened = True
-                #If login was succesfull - we can send signals that we are ready to enter codes
+                # If login was succesfull - we can send signals that we are ready to enter codes
                 if self.login():
                     self.is_login_performed = True
                     if SETTINGS['game_url'][0]:
@@ -116,10 +116,10 @@ class QuestUA(object):
                 try:
                     code_field.submit()
                 except NoSuchElementException:
-                    #For agiotage game
+                    # For agiotage game
                     button = self.find_element_by('id', 'submit')
                     button.click()
-                #If no errors appeared - returning True, else - we are going to terminate the program
+                # If no errors appeared - returning True, else - we are going to terminate the program
                 return True
             else:
                 return False

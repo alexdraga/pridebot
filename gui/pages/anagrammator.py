@@ -9,6 +9,7 @@ import tkMessageBox
 from config import default_settings, DATABASES_FOLDER
 from gui.helpers.gui_helpers import center_window
 from web.database import DBDriver
+from config.localization import BUTTONS, LANGUAGE
 
 
 __author__ = 'a_draga'
@@ -100,7 +101,6 @@ class AnagrammForm(object):
             if not chosen:
                 default_settings.selected = dictionaries_db[0]
 
-
         self.dictionary.trace('w', trace_dictionary)
 
         # self.scroll_bar_db = Tkinter.Scrollbar(self.frame)
@@ -113,18 +113,18 @@ class AnagrammForm(object):
         # self.databases.pack(side=Tkinter.TOP)
         # self.databases.selection_set(self.databases.get(0, Tkinter.END).index(settings.selected))
 
-        do_anagramm = Tkinter.Button(self.frame, text='Поиск слов', command=self.preview)
+        do_anagramm = Tkinter.Button(self.frame, text=BUTTONS['search_words'][LANGUAGE], command=self.preview)
         do_anagramm.grid(row=5, column=1, sticky=Tkinter.E)
         # do_anagramm.pack(side=Tkinter.RIGHT, fill=Tkinter.X)
 
-        add_button = Tkinter.Button(self.frame, text='Добавить коды', command=self.add_codes)
+        add_button = Tkinter.Button(self.frame, text=BUTTONS['add_codes'][LANGUAGE], command=self.add_codes)
         add_button.grid(row=5, column=1)
         # add_button.pack(side=Tkinter.RIGHT)
-        cancel_button = Tkinter.Button(self.frame, text='Отмена', command=self.on_close)
+        cancel_button = Tkinter.Button(self.frame, text=BUTTONS['cancel'][LANGUAGE], command=self.on_close)
         cancel_button.grid(row=5, column=0, sticky=Tkinter.W)
         # cancel_button.pack(side=Tkinter.LEFT)
 
-        help_button = Tkinter.Button(self.frame, text='Помощь', command=self.help)
+        help_button = Tkinter.Button(self.frame, text=BUTTONS['help'][LANGUAGE], command=self.help)
         help_button.grid(row=5, column=1, sticky=Tkinter.W)
 
         width = label_letters.winfo_reqwidth() + self.letters.winfo_reqwidth()

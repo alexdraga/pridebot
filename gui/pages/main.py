@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from gui.helpers.gui_helpers import center_window
 
 __author__ = 'a_draga'
 
@@ -16,7 +15,8 @@ from config.default_settings import SETTINGS, section
 from gui.pages.anagrammator import AnagrammForm
 from gui.pages.code_generator import GenerateCodesForm
 from gui.pages.settings import SettingsForm
-
+from config.localization import BUTTONS, LANGUAGE
+from gui.helpers.gui_helpers import center_window
 
 class MainForm(object):
     def __init__(self):
@@ -29,17 +29,17 @@ class MainForm(object):
 
         self.random = Tkinter.IntVar(self.root)
 
-        random = Tkinter.Checkbutton(self.root, text=' В случайном порядке', variable=self.random)
+        random = Tkinter.Checkbutton(self.root, text=BUTTONS['enter_in_random_order'][LANGUAGE], variable=self.random)
 
-        self.start_codes = Tkinter.Button(self.root, text='Начать перебор', command=self.start_brute_force)
-        self.copy_to_clipboard = Tkinter.Button(self.root, text='Скопировать коды', command=self.copy_to_clipboard)
+        self.start_codes = Tkinter.Button(self.root, text=BUTTONS['start_brute_force'][LANGUAGE], command=self.start_brute_force)
+        self.copy_to_clipboard = Tkinter.Button(self.root, text=BUTTONS['copy_codes'][LANGUAGE], command=self.copy_to_clipboard)
         self.scroll_bar = Tkinter.Scrollbar(self.frame)
         self.root.winfo_height()
-        self.settings = Tkinter.Button(self.root, text='Настройки', command=self.call_settings)
+        self.settings = Tkinter.Button(self.root, text=BUTTONS['settings'][LANGUAGE], command=self.call_settings)
 
-        self.code_generator = Tkinter.Button(self.root, text='Генератор кодов', command=self.call_code_generator)
-        self.db_words = Tkinter.Button(self.root, text='Анаграммы', command=self.call_anagrammator)
-        self.clear_codes = Tkinter.Button(self.root, text='Очистить', command=self.clear_codes)
+        self.code_generator = Tkinter.Button(self.root, text=BUTTONS['code_generator'][LANGUAGE], command=self.call_code_generator)
+        self.db_words = Tkinter.Button(self.root, text=BUTTONS['anagramms'][LANGUAGE], command=self.call_anagrammator)
+        self.clear_codes = Tkinter.Button(self.root, text=BUTTONS['clear'][LANGUAGE], command=self.clear_codes)
 
         self.frame.pack(fill=Tkinter.BOTH, expand=Tkinter.YES)
         self.start_codes.pack(side=Tkinter.RIGHT)
@@ -57,7 +57,9 @@ class MainForm(object):
         self.codes.config(yscrollcommand=self.scroll_bar.set)
         center_window(self.codes.winfo_reqwidth() + self.scroll_bar.winfo_reqwidth(),
                       self.codes.winfo_reqheight() + self.settings.winfo_reqheight(), self.root)
+
         self.root.mainloop()
+        self.write_config()
 
     def call_settings(self):
         self.root.withdraw()
@@ -76,7 +78,7 @@ class MainForm(object):
             time_started = datetime.datetime.now()
             # Hiding main GUI form
             self.root.withdraw()
-            #Starting webdriver and performing login
+            # Starting webdriver and performing login
             quest = QuestUA()
             if quest.is_url_opened:
                 if quest.is_login_performed:
@@ -92,7 +94,7 @@ class MainForm(object):
                             if quest.check_code(code):
                                 codes_tried += 1
                             else:
-                                #check_code returns False or None only if firefox was closed etc.
+                                # check_code returns False or None only if firefox was closed etc.
                                 print u' Возникла ошибка во время ввода кода. Остановка перебора...'
                                 break
                     else:
@@ -102,12 +104,12 @@ class MainForm(object):
                                 if quest.check_code(code):
                                     codes_tried += 1
                                 else:
-                                    #check_code returns False or None only if firefox was closed etc.
+                                    # check_code returns False or None only if firefox was closed etc.
                                     print u' Возникла ошибка во время ввода кода. Остановка перебора...'
                                     break
                     time_finished = datetime.datetime.now()
                     print u' Перебрано кодов: %s за %s секунд' % (
-                    codes_tried, str((time_finished - time_started).seconds))
+                        codes_tried, str((time_finished - time_started).seconds))
                 else:
                     print u' Ошибка во время логина. Остановка...'
             else:

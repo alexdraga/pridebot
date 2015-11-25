@@ -149,14 +149,11 @@ class MainForm(object):
         config = ConfigParser.ConfigParser()
         config.read(filename)
         options = config.options(section)
-        new_databases = []
         for option in options:
             if option == 'bases':
                 default_settings.DATABASES = config.get(section, option).split(';')
             if option == 'names':
                 default_settings.NAMES = config.get(section, option).split(';')
-                # for name in settings.NAMES:
-                # settings.NAMES[settings.NAMES.index(name)]=name.decode('utf-8')
             if option == 'selected':
                 default_settings.selected = config.get(section, option)
 

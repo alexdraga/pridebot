@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
+from os import path
+
 import Tkinter
 import datetime
 import re
 import tkMessageBox
 
-from config import default_settings
+from config import default_settings, DATABASES_FOLDER
 from gui.helpers.gui_helpers import center_window
 from web.database import DBDriver
 
@@ -143,7 +145,7 @@ class AnagrammForm(object):
         letters = self.letters.get()
         letters = letters.replace(' ', '')
         if letters:
-            database = default_settings.selected
+            database = path.join(DATABASES_FOLDER, default_settings.selected)
             db = DBDriver(database)
             if self.strict_order.get():
                 time_started = datetime.datetime.now()

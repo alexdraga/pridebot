@@ -9,9 +9,10 @@ import random
 import Tkinter
 import ConfigParser
 
+from config import CONFIG_FILENAME, DATABASES_CONFIG, default_settings
+
 from web.actions import QuestUA
-from default_settings import SETTINGS, section
-import default_settings
+from config.default_settings import SETTINGS, section
 from gui.pages.anagrammator import AnagrammForm
 from gui.pages.code_generator import GenerateCodesForm
 from gui.pages.settings import SettingsForm
@@ -119,7 +120,7 @@ class MainForm(object):
         else:
             print u' Не задан набор кодов для перебора'
 
-    def read_config(self, filename='config.cfg'):
+    def read_config(self, filename=CONFIG_FILENAME):
         config = ConfigParser.ConfigParser()
         if os.path.isfile(filename):
             config.read(filename)
@@ -131,7 +132,7 @@ class MainForm(object):
             self.write_config(filename)
             self.read_config(filename)
 
-    def write_config(self, filename='config.cfg'):
+    def write_config(self, filename=CONFIG_FILENAME):
         config = ConfigParser.ConfigParser()
         config.add_section(section)
         for key in SETTINGS:
@@ -144,7 +145,7 @@ class MainForm(object):
         self.root.withdraw()
         AnagrammForm(self)
 
-    def read_databases_config(self, filename='databases.cfg', section='Bases'):
+    def read_databases_config(self, filename=DATABASES_CONFIG, section='Bases'):
         config = ConfigParser.ConfigParser()
         config.read(filename)
         options = config.options(section)
@@ -159,7 +160,7 @@ class MainForm(object):
             if option == 'selected':
                 default_settings.selected = config.get(section, option)
 
-    def write_databases_config(self, filename='databases.cfg', section='Bases'):
+    def write_databases_config(self, filename=DATABASES_CONFIG, section='Bases'):
         config = ConfigParser.ConfigParser()
         config.add_section(section)
         bases = ''

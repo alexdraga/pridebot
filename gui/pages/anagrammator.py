@@ -4,7 +4,7 @@ import datetime
 import re
 import tkMessageBox
 
-import default_settings
+from config import default_settings
 from gui.helpers.gui_helpers import center_window
 from web.database import DBDriver
 

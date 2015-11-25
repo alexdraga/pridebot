@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 __author__ = 'a_draga'
-import sys
-from selenium import webdriver
 import string
-import time, random
-from default_settings import SETTINGS
+import time
+import random
+
+from selenium import webdriver
+
+from config.default_settings import SETTINGS
+
 
 #Exceptions:
 from httplib import BadStatusLine

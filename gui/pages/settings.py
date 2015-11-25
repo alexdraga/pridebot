@@ -2,7 +2,7 @@
 import Tkinter
 import tkMessageBox
 
-from default_settings import SETTINGS
+from config.default_settings import SETTINGS
 from gui.helpers.gui_helpers import center_window
 
 

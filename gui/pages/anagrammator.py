@@ -9,7 +9,7 @@ import tkMessageBox
 from config import default_settings, DATABASES_FOLDER
 from gui.helpers.gui_helpers import center_window
 from web.database import DBDriver
-from config.localization import BUTTONS, LANGUAGE
+from config.localization import BUTTONS, LANGUAGE, LABELS
 
 
 __author__ = 'a_draga'
@@ -19,14 +19,14 @@ class AnagrammForm(object):
     def __init__(self, parent):
         self.parent = parent
         self.root = Tkinter.Tk()
-        self.root.title('Анаграммы')
+        self.root.title(LABELS['anagrams'][LANGUAGE])
         self.root.focus_force()
         self.frame = Tkinter.Frame(self.root)
         self.frame.grid()
         # self.frame.pack()
         self.root.protocol('WM_DELETE_WINDOW', self.on_close)
 
-        label_letters = Tkinter.Label(self.frame, text='Набор букв для анаграммирования:')
+        label_letters = Tkinter.Label(self.frame, text=LABELS['anagrams_letters'][LANGUAGE])
         label_letters.grid(row=0, column=0)
         # label_letters.pack(side=Tkinter.TOP, fill=Tkinter.X)
 
@@ -35,7 +35,7 @@ class AnagrammForm(object):
         # self.letters.insert(0, 'entry')
         # self.letters.pack(side=Tkinter.TOP, fill=Tkinter.X)
 
-        label_length = Tkinter.Label(self.frame, text=' Длина:')
+        label_length = Tkinter.Label(self.frame, text=LABELS['length'][LANGUAGE])
         label_length.grid(row=1, column=0)
         # label_length.pack(side=Tkinter.TOP, fill=Tkinter.X)
 
@@ -44,7 +44,7 @@ class AnagrammForm(object):
         # self.letters.insert(0, 'entry')
         # self.length.pack(side=Tkinter.TOP, fill=Tkinter.BOTH)
 
-        label_reg = Tkinter.Label(self.frame, text=' Маска:')
+        label_reg = Tkinter.Label(self.frame, text=LABELS['mask'][LANGUAGE])
         label_reg.grid(row=2, column=0, sticky=Tkinter.W)
         self.regex = Tkinter.Entry(self.frame)
         self.regex.insert(0, '.*')
@@ -52,16 +52,16 @@ class AnagrammForm(object):
 
         self.use_mask = Tkinter.IntVar(self.root)
 
-        use_mask = Tkinter.Checkbutton(self.frame, text=' Использовать маску', variable=self.use_mask)
+        use_mask = Tkinter.Checkbutton(self.frame, text=LABELS['use_mask'][LANGUAGE], variable=self.use_mask)
         use_mask.grid(row=2, column=1, sticky=Tkinter.E)
 
         self.strict_order = Tkinter.IntVar(self.root)
 
-        strict_order = Tkinter.Checkbutton(self.frame, text=' Сохранять порядок букв', variable=self.strict_order)
+        strict_order = Tkinter.Checkbutton(self.frame, text=LABELS['leave_order'][LANGUAGE], variable=self.strict_order)
         strict_order.grid(row=1, column=1, sticky=Tkinter.E)
         # strict_order.pack(side=Tkinter.TOP, fill=Tkinter.X)
 
-        label_preview = Tkinter.Label(self.frame, text=' Результат поиска:')
+        label_preview = Tkinter.Label(self.frame, text=LABELS['search_result'][LANGUAGE])
         label_preview.grid(row=3, column=1, sticky=Tkinter.N)
         self.preview_box = Tkinter.Text(self.frame, font=("Helvetica", 12), height=10, width=30)
         self.preview_box.grid(row=4, column=1, sticky=Tkinter.S + Tkinter.W + Tkinter.E + Tkinter.N)
@@ -73,7 +73,7 @@ class AnagrammForm(object):
         self.preview_box.config(yscrollcommand=self.scroll_bar.set)
         # self.preview_box.pack(side=Tkinter.BOTTOM)
 
-        label_db = Tkinter.Label(self.frame, text=' Словарь:')
+        label_db = Tkinter.Label(self.frame, text=LABELS['dictionary'][LANGUAGE])
         label_db.grid(row=3, column=0, sticky=Tkinter.W)
         # label_db.pack(side=Tkinter.TOP, fill=Tkinter.X)
 

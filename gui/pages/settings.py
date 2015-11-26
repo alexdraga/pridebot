@@ -3,6 +3,7 @@ import Tkinter
 import tkMessageBox
 
 from config.default_settings import SETTINGS
+from config.localization import BUTTONS, LANGUAGE
 from gui.helpers.gui_helpers import center_window
 
 
@@ -36,11 +37,11 @@ class SettingsForm(object):
             self.setting_entry.update({setting[0]: entry})
             i += 1
         self.root.protocol('WM_DELETE_WINDOW', self.on_close)
-        self.save = Tkinter.Button(self.frame, text='Сохранить', command=self.save)
+        self.save = Tkinter.Button(self.frame, text=BUTTONS['save'][LANGUAGE], command=self.save)
         self.save.grid(row=i + 1, column=1, sticky=Tkinter.E)
-        self.cancel = Tkinter.Button(self.frame, text='Отмена', command=self.cancel)
+        self.cancel = Tkinter.Button(self.frame, text=BUTTONS['cancel'][LANGUAGE], command=self.cancel)
         self.cancel.grid(row=i + 1, column=1, sticky=Tkinter.W)
-        self.help = Tkinter.Button(self.frame, text='Помощь', command=self.help)
+        self.help = Tkinter.Button(self.frame, text=BUTTONS['help'][LANGUAGE], command=self.help)
         self.help.grid(row=i + 1, column=0, sticky=Tkinter.W + Tkinter.E)
         center_window(entry.winfo_reqwidth() + label.winfo_reqwidth(),
                       entry.winfo_reqheight() * len(self.setting_entry) + self.save.winfo_reqheight(),

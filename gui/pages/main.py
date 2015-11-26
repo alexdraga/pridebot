@@ -38,7 +38,7 @@ class MainForm(object):
         self.settings = Tkinter.Button(self.root, text=BUTTONS['settings'][LANGUAGE], command=self.call_settings)
 
         self.code_generator = Tkinter.Button(self.root, text=BUTTONS['code_generator'][LANGUAGE], command=self.call_code_generator)
-        self.db_words = Tkinter.Button(self.root, text=BUTTONS['anagramms'][LANGUAGE], command=self.call_anagrammator)
+        self.db_words = Tkinter.Button(self.root, text=BUTTONS['anagrams'][LANGUAGE], command=self.call_anagrammator)
         self.clear_codes = Tkinter.Button(self.root, text=BUTTONS['clear'][LANGUAGE], command=self.clear_codes)
 
         self.frame.pack(fill=Tkinter.BOTH, expand=Tkinter.YES)

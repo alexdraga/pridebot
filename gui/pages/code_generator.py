@@ -6,7 +6,7 @@ import re
 
 from config.default_settings import SETTINGS
 from gui.helpers.gui_helpers import center_window
-from config.localization import BUTTONS, LANGUAGE
+from config.localization import BUTTONS, LANGUAGE, LABELS
 
 
 __author__ = 'a_draga'
@@ -26,25 +26,25 @@ class GenerateCodesForm(object):
 
         self.parent = parent
         self.root = Tkinter.Tk()
-        self.root.title('Генератор кодов')
+        self.root.title(LABELS['code_generator'][LANGUAGE])
         self.root.focus_force()
         self.left_frame = Tkinter.Frame(self.root)
         self.left_frame.pack(side=Tkinter.LEFT)
 
-        label = Tkinter.Label(self.left_frame, text=' Набор символов для генерации:')
+        label = Tkinter.Label(self.left_frame, text=LABELS['symbols_to_generate'][LANGUAGE])
         label.pack(side=Tkinter.TOP, fill=Tkinter.X)
 
         self.letters_to_generate = Tkinter.Text(self.left_frame, font=("Helvetica", 12), height=10, width=30)
         self.letters_to_generate.pack(side=Tkinter.TOP)
         # self.letters_to_generate.config(size=36)
 
-        label_reg = Tkinter.Label(self.left_frame, text=' Маска:')
+        label_reg = Tkinter.Label(self.left_frame, text=LABELS['mask'][LANGUAGE])
         label_reg.pack(side=Tkinter.TOP, fill=Tkinter.X)
         self.regex = Tkinter.Entry(self.left_frame)
         self.regex.insert(0, '.*')
         self.regex.pack(side=Tkinter.TOP, fill=Tkinter.X)
 
-        label_length = Tkinter.Label(self.left_frame, text=' Длина кодов (от ... до ...):')
+        label_length = Tkinter.Label(self.left_frame, text=LABELS['codes_length'][LANGUAGE])
         label_length.pack(side=Tkinter.TOP, fill=Tkinter.X)
 
         self.length_from = Tkinter.Entry(self.left_frame)
@@ -54,7 +54,7 @@ class GenerateCodesForm(object):
         self.length_to.insert(0, '1')
         self.length_to.pack(side=Tkinter.TOP, fill=Tkinter.X)
 
-        label_preview = Tkinter.Label(self.left_frame, text=' Просмотр:')
+        label_preview = Tkinter.Label(self.left_frame, text=LABELS['preview'][LANGUAGE])
         label_preview.grid(row=0, column=0)
         label_preview.pack(side=Tkinter.TOP, fill=Tkinter.X)
         self.preview_box = Tkinter.Text(self.left_frame, font=("Helvetica", 12), height=10, width=30)
@@ -88,11 +88,11 @@ class GenerateCodesForm(object):
         digits_button.pack(side=Tkinter.TOP, fill=Tkinter.X)
         punctuation_latin_button.pack(side=Tkinter.TOP, fill=Tkinter.X)
 
-        preview = Tkinter.Button(self.root, text='Просмотр', command=self.preview)
+        preview = Tkinter.Button(self.root, text=BUTTONS['preview'][LANGUAGE], command=self.preview)
         preview.pack(side=Tkinter.BOTTOM, fill=Tkinter.X)
-        add_button = Tkinter.Button(self.root, text='Добавить коды', command=self.add_codes)
+        add_button = Tkinter.Button(self.root, text=BUTTONS['add_codes'][LANGUAGE], command=self.add_codes)
         add_button.pack(side=Tkinter.BOTTOM, fill=Tkinter.X)
-        cancel_button = Tkinter.Button(self.root, text='Отмена', command=self.on_close)
+        cancel_button = Tkinter.Button(self.root, text=BUTTONS['cancel'][LANGUAGE], command=self.on_close)
         cancel_button.pack(side=Tkinter.BOTTOM, fill=Tkinter.X)
 
         total_height = self.letters_to_generate.winfo_reqheight() + self.preview_box.winfo_reqheight() + \

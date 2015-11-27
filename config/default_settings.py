@@ -17,10 +17,10 @@ SETTINGS = {
 }
 
 DATABASES = [
-    'rus1.mdb', 'eng1.mdb'
+    'rus1.mdb', 'eng1.mdb', 'chem_elem_ru_en.mdb', 'cities.mdb', 'countries.mdb', 'kiev_streets.mdb'
 ]
 NAMES = [
-    'Русский словарь', "Английский словарь"
+    'Русский словарь', 'Английский словарь', 'Таблица химических элементов', 'Города мира', 'Страны мира', 'Улицы Киева'
 ]
 
 selected = 'rus1.mdb'

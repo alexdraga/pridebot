@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from config.localization import LOGS, LANGUAGE
+
 __author__ = 'a_draga'
 import string
 import time
@@ -33,7 +35,7 @@ class QuestUA(object):
     def login(self):
         login = SETTINGS['login'][0].decode('utf-8')
         if login:
-            print u' Пробуем залогиниться'
+            print LOGS['trying_to_login'][LANGUAGE]
             try:
                 # Waiting for login field to appear and sending login to it
                 self.wait_for_field([SETTINGS['login_locator'][0]])
@@ -62,7 +64,7 @@ class QuestUA(object):
             return True
 
     def open_firefox(self):
-        print u' Открываем Firefox...'
+        print LOGS['opening_firefox'][LANGUAGE]
         # Creating webdriver for Firefox
         self.driver = webdriver.Firefox()
 
@@ -77,7 +79,7 @@ class QuestUA(object):
 
     def __init__(self):
         if SETTINGS['login_url'][0]:
-            print u' Открываем страницу логина'
+            print LOGS['opening_firefox'][LANGUAGE]
             self.open_firefox()
             if self.open_url(SETTINGS['login_url'][0]):
                 # If url was opened - we can try to perform login
@@ -86,7 +88,7 @@ class QuestUA(object):
                 if self.login():
                     self.is_login_performed = True
                     if SETTINGS['game_url'][0]:
-                        print u' Открываем страничку с игрой'
+                        print LOGS['opening_game_page'][LANGUAGE]
                         self.open_url(SETTINGS['game_url'][0])
                 else:
                     self.is_login_performed = False
@@ -106,7 +108,7 @@ class QuestUA(object):
             random.random()
             time_to_sleep = float(SETTINGS['time_interval'][0]) + random.uniform(0, float(SETTINGS['random_part'][0]))
             if time_to_sleep:
-                print u' Ждем %s секунд до ввода' % str(time_to_sleep)
+                print LOGS['waiting_before_next_code'][LANGUAGE] % str(time_to_sleep)
                 time.sleep(time_to_sleep)
             by_value = self.parse_locator_line(found_code_locator)
             code_field = self.find_element_by(by_value['by'], by_value['value'])
@@ -145,7 +147,7 @@ class QuestUA(object):
             while not (is_code_field_present(fields[0]) or is_code_field_present(fields[1])):
                 if is_code_field_present(fields[0]) == 'STOP' or is_code_field_present(fields[1]) == 'STOP':
                     break
-                print u" Не могу найти поле для ввода. Через 5 секунд попытка будет повторена."
+                print LOGS['can_not_find_code_field'][LANGUAGE]
                 time.sleep(5)
             if is_code_field_present(fields[0]):
                 return fields[0]
@@ -155,7 +157,7 @@ class QuestUA(object):
             while not is_code_field_present(fields[0]):
                 if is_code_field_present(fields[0]) == 'STOP':
                     break
-                print u" Не могу найти поле для ввода. Через 5 секунд попытка будет повторена."
+                print LOGS['can_not_find_code_field'][LANGUAGE]
                 time.sleep(5)
 
     @staticmethod

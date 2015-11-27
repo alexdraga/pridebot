@@ -9,8 +9,7 @@ import tkMessageBox
 from config import default_settings, DATABASES_FOLDER
 from gui.helpers.gui_helpers import center_window
 from web.database import DBDriver
-from config.localization import BUTTONS, LANGUAGE, LABELS
-
+from config.localization import BUTTONS, LANGUAGE, LABELS, HELPERS, LOGS
 
 __author__ = 'a_draga'
 
@@ -162,18 +161,18 @@ class AnagrammForm(object):
                     time_finished = datetime.datetime.now()
             self.preview_box.delete("0.0", Tkinter.END)
             if results:
-                print u'Найдено кодов в словаре: %s за %s секунд' % (
+                print LOGS["codes_found"][LANGUAGE] % (
                     len(results), str((time_finished - time_started).seconds))
                 if self.use_mask.get():
                     # Perform filter by regex-mask
                     regex = self.regex.get()
                     results = self.filter_by_regex(results, regex)
-                    print u' Отфильтровано слов: %s за %s секунд' % (
+                    print LOGS["words_filtered"][LANGUAGE] % (
                         len(results), str((time_finished - time_started).seconds))
                 for result in results:
                     self.preview_box.insert(Tkinter.END, result + '\n')
             else:
-                print u'Не найдено слов, удовлетворяющих запрос'
+                print LOGS["no_words_found"][LANGUAGE]
 
     def add_codes(self):
         generated_codes = self.preview_box.get("0.0", Tkinter.END)
@@ -185,37 +184,5 @@ class AnagrammForm(object):
         return filter(regular.match, codes)
 
     def help(self):
-        message = """
-        Чтобы вывести все коды из словаря - укажите только %
-        В поле длины можно указать:
-            =0 - анаграмма будет делаться только из букв, введеных в поле ввода
-            <4, >4 - длина генерируемых слов больше или меньше указанного числа
-
-        Также, можно делать SQL инъекции, например, если ввести:
-            <10 AND LEN(word)>5 - в результате будут все слова,
-            длина которых между 5 и 10 символами.
-         Для инъекции можно использовать имя столбца word - в нем хранятся слова.
-
-        В маске используются регулярные выражения
-        Основы:
-            . - любая буква один раз
-            .* - сколько угодно каких угодно букв
-            .+ - 1 и больше каких угодно букв
-            ^ - начало строки
-            $ - конец строки
-            [A-Z] - набор букв
-        Поиск с учетом регистра!
-
-        Например, чтобы найти все слова, которые начинаются
-        на дра и заканчиваются на га:
-            1. В поле "Буквы для анаграммы" вводим %
-            2. В поле маска вводим:
-                ^дра.*га$
-            3. Ставим галочку "Использовать маску"
-                ...
-            Профит!
-
-            Если надо найти все слова, внутри которых есть дра.*га - можно записать так:
-            дра.*га
-        """
+        message = HELPERS['anagram'][LANGUAGE]
         tkMessageBox.showinfo(title="Help", message=message)

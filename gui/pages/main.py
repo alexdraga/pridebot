@@ -15,7 +15,7 @@ from config.default_settings import SETTINGS, section
 from gui.pages.anagrammator import AnagrammForm
 from gui.pages.code_generator import GenerateCodesForm
 from gui.pages.settings import SettingsForm
-from config.localization import BUTTONS, LANGUAGE
+from config.localization import BUTTONS, LANGUAGE, LOGS
 from gui.helpers.gui_helpers import center_window
 
 class MainForm(object):
@@ -85,42 +85,30 @@ class MainForm(object):
                     codes_tried = 0
 
                     if self.random.get():
-                        number_not_tried = range(0, len(codes) - 1)
-                        while number_not_tried:
-                            code_to_try = random.choice(number_not_tried)
-                            number_not_tried.remove(code_to_try)
-                            code = codes[code_to_try]
-                            print u' Пробуем код: %s' % code
+                        random.shuffle(codes)
+                    for code in codes:
+                        if code != '':
+                            print LOGS["trying_code"][LANGUAGE] % code
                             if quest.check_code(code):
                                 codes_tried += 1
                             else:
                                 # check_code returns False or None only if firefox was closed etc.
-                                print u' Возникла ошибка во время ввода кода. Остановка перебора...'
+                                print LOGS["error_occurred_stopping"][LANGUAGE]
                                 break
-                    else:
-                        for code in codes:
-                            if code != '':
-                                print u' Пробуем код: %s' % code
-                                if quest.check_code(code):
-                                    codes_tried += 1
-                                else:
-                                    # check_code returns False or None only if firefox was closed etc.
-                                    print u' Возникла ошибка во время ввода кода. Остановка перебора...'
-                                    break
                     time_finished = datetime.datetime.now()
-                    print u' Перебрано кодов: %s за %s секунд' % (
+                    print LOGS["codes_tried"][LANGUAGE] % (
                         codes_tried, str((time_finished - time_started).seconds))
                 else:
-                    print u' Ошибка во время логина. Остановка...'
+                    print LOGS["error_during_login"][LANGUAGE]
             else:
-                print u' Ошибка во время открытия адреса. Остановка...'
+                print LOGS["error_during_opening_url"][LANGUAGE]
             try:
                 quest.driver.close()
             except:
-                print u' Неизвестная ошибка. Остановка...'
+                print LOGS["unknown_error"][LANGUAGE]
             self.root.deiconify()
         else:
-            print u' Не задан набор кодов для перебора'
+            print LOGS["no_codes_for_bruteforce"][LANGUAGE]
 
     def read_config(self, filename=CONFIG_FILENAME):
         config = ConfigParser.ConfigParser()

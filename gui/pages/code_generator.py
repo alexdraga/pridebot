@@ -6,8 +6,7 @@ import re
 
 from config.default_settings import SETTINGS
 from gui.helpers.gui_helpers import center_window
-from config.localization import BUTTONS, LANGUAGE, LABELS
-
+from config.localization import BUTTONS, LANGUAGE, LABELS, LOGS
 
 __author__ = 'a_draga'
 
@@ -157,12 +156,14 @@ class GenerateCodesForm(object):
         if letters:
             try:
                 length_from = int(self.length_from.get())
-            except:
-                print u' Неверное число в поле "длина от"'
+            except ValueError:
+                print LOGS["wrong_field_length_from"][LANGUAGE]
+                return
             try:
                 length_to = int(self.length_to.get())
-            except:
-                print u' Неверное число в поле "длина до"'
+            except ValueError:
+                print LOGS["wrong_field_length_to"][LANGUAGE]
+                return
             time_started = datetime.datetime.now()
             codes_generated = 0
             if length_to and length_from:
@@ -177,10 +178,10 @@ class GenerateCodesForm(object):
                         for code in filtered_codes:
                             self.preview_box.insert(Tkinter.END, code + '\n')
                     time_finished = datetime.datetime.now()
-                    print u' Создано %s кодов за %s секунд' % (
+                    print LOGS["created_codes"][LANGUAGE] % (
                         codes_generated, str((time_finished - time_started).seconds))
                 else:
-                    print u' Слишком много комбинаций: %s. На данный момент лимит: %s' % (
+                    print LOGS["limit_exceeded"][LANGUAGE] % (
                         str(self.number_of_codes(letters, length_to)), SETTINGS['limit_code_number'][0])
 
     def number_of_codes(self, letters, length):

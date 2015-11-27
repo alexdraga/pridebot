@@ -3,7 +3,7 @@ import Tkinter
 import tkMessageBox
 
 from config.default_settings import SETTINGS
-from config.localization import BUTTONS, LANGUAGE
+from config.localization import BUTTONS, LANGUAGE, HELPERS
 from gui.helpers.gui_helpers import center_window
 
 
@@ -63,20 +63,5 @@ class SettingsForm(object):
         self.on_close()
 
     def help(self):
-        message = """
-        Для локаторов элементов вводите значение в формате:
-        %by%=%value%
-        Где возможны варианты::
-        - id (для quest.ua id=txtLogin - поле логина)
-        - name (для play.cq.com.ua name="code" - поле для ввода кода)
-        - css
-        - class
-        - xpath (например: xpath=//*[@id="gbqfq"] )
-        - tag
-        Если не нужно выполнять логин в систему - login = ''
-
-        Лимит числа генерируемых кодов отсутсвует, если = 0
-        Обратите внимание, что генерация кодов с длиной больше 6 -
-        забирает невероятно много времени. Оно того не стоит.
-        """
+        message = HELPERS['settings'][LANGUAGE]
         tkMessageBox.showinfo(title="Help", message=message)

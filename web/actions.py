@@ -1,36 +1,33 @@
-# -*- coding: utf-8 -*-
-from config.localization import LOGS, LANGUAGE
-
-__author__ = 'a_draga'
 import string
 import time
 import random
+from httplib import BadStatusLine
 
 from selenium import webdriver
+from selenium.common.exceptions import InvalidElementStateException, \
+    NoSuchElementException, WebDriverException
 
 from config.default_settings import SETTINGS
+from config.localization import LOGS, LANGUAGE
 
 
-# Exceptions:
-from httplib import BadStatusLine
-from selenium.common.exceptions import InvalidElementStateException, NoSuchElementException
-
-
-class QuestUA(object):
-    def find_element_by(self, by, element):
-        try:
-            func = {'id': self.driver.find_element_by_id,
-                    'name': self.driver.find_element_by_name,
-                    'css': self.driver.find_element_by_css_selector,
-                    'class': self.driver.find_element_by_class_name,
-                    'xpath': self.driver.find_element_by_xpath,
-                    'tag': self.driver.find_element_by_tag_name,
-            }
-            return func[by](element)
-        except NoSuchElementException:
-            return False
-        except:
-            return 'STOP'
+class Quest(object):
+    def __init__(self):
+        self.driver = None
+        self.is_url_opened = False
+        self.is_login_performed = False
+        if SETTINGS['login_url'][0]:
+            print LOGS['opening_firefox'][LANGUAGE]
+            self.open_firefox()
+            if self.open_url(SETTINGS['login_url'][0]):
+                # If url was opened - we can try to perform login
+                self.is_url_opened = True
+                # If login was successful - we can send signals that we are ready to enter codes
+                if self.login():
+                    self.is_login_performed = True
+                    if SETTINGS['game_url'][0]:
+                        print LOGS['opening_game_page'][LANGUAGE]
+                        self.open_url(SETTINGS['game_url'][0])
 
     def login(self):
         login = SETTINGS['login'][0].decode('utf-8')
@@ -58,10 +55,25 @@ class QuestUA(object):
                     button.click()
                 # If no errors appeared - returning True, else - we are going to terminate the program
                 return True
-            except BadStatusLine:
-                pass
+            except (BadStatusLine, WebDriverException):
+                return False
         else:
             return True
+
+    def find_element_by(self, by, element):
+        try:
+            func = {'id': self.driver.find_element_by_id,
+                    'name': self.driver.find_element_by_name,
+                    'css': self.driver.find_element_by_css_selector,
+                    'class': self.driver.find_element_by_class_name,
+                    'xpath': self.driver.find_element_by_xpath,
+                    'tag': self.driver.find_element_by_tag_name,
+            }
+            return func[by](element)
+        except NoSuchElementException:
+            return False
+        except:
+            return 'STOP'
 
     def open_firefox(self):
         print LOGS['opening_firefox'][LANGUAGE]
@@ -74,26 +86,8 @@ class QuestUA(object):
             self.driver.get(url)
             # If no errors appeared - returning True, else - we are going to terminate the program
             return True
-        except BadStatusLine:
-            pass
-
-    def __init__(self):
-        if SETTINGS['login_url'][0]:
-            print LOGS['opening_firefox'][LANGUAGE]
-            self.open_firefox()
-            if self.open_url(SETTINGS['login_url'][0]):
-                # If url was opened - we can try to perform login
-                self.is_url_opened = True
-                # If login was succesfull - we can send signals that we are ready to enter codes
-                if self.login():
-                    self.is_login_performed = True
-                    if SETTINGS['game_url'][0]:
-                        print LOGS['opening_game_page'][LANGUAGE]
-                        self.open_url(SETTINGS['game_url'][0])
-                else:
-                    self.is_login_performed = False
-        else:
-            self.is_url_opened = False
+        except (BadStatusLine, WebDriverException):
+            return False
 
     def check_code(self, code):
         """
@@ -101,12 +95,13 @@ class QuestUA(object):
         """
         try:
             if SETTINGS['code_alt_locator'][0]:
-                found_code_locator = self.wait_for_field([SETTINGS['code_locator'][0], SETTINGS['code_alt_locator'][0]])
+                found_code_locator = self.wait_for_field([SETTINGS['code_locator'][0],
+                                                          SETTINGS['code_alt_locator'][0]])
             else:
                 found_code_locator = SETTINGS['code_locator'][0]
                 self.wait_for_field([SETTINGS['code_locator'][0]])
-            random.random()
-            time_to_sleep = float(SETTINGS['time_interval'][0]) + random.uniform(0, float(SETTINGS['random_part'][0]))
+            time_to_sleep = float(SETTINGS['time_interval'][0]) + random.uniform(0,
+                                                                                 float(SETTINGS['random_part'][0]))
             if time_to_sleep:
                 print LOGS['waiting_before_next_code'][LANGUAGE] % str(time_to_sleep)
                 time.sleep(time_to_sleep)
@@ -125,7 +120,7 @@ class QuestUA(object):
                 return True
             else:
                 return False
-        except InvalidElementStateException, BadStatusLine:
+        except (InvalidElementStateException, BadStatusLine):
             pass
 
     def wait_for_field(self, fields):

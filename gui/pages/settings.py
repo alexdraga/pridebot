@@ -1,13 +1,9 @@
-# -*- coding: utf-8 -*-
 import Tkinter
 import tkMessageBox
 
 from config.default_settings import SETTINGS
-from config.localization import BUTTONS, LANGUAGE, HELPERS
+from config.localization import BUTTONS, LANGUAGE, HELPERS, HEADERS
 from gui.helpers.gui_helpers import center_window
-
-
-__author__ = 'a_draga'
 
 
 class SettingsForm(object):
@@ -21,11 +17,10 @@ class SettingsForm(object):
     def __init__(self, parent):
         self.parent = parent
         self.root = Tkinter.Tk()
-        self.root.title('Настройки')
+        self.root.title(HEADERS['settings'][LANGUAGE])
         self.root.focus_force()
         self.frame = Tkinter.Frame(self.root)
         self.frame.grid(sticky=Tkinter.W + Tkinter.E + Tkinter.S + Tkinter.N)
-
         self.setting_entry = {}
         i = 0
         for setting in self.get_settings_list():
@@ -46,7 +41,6 @@ class SettingsForm(object):
         center_window(entry.winfo_reqwidth() + label.winfo_reqwidth(),
                       entry.winfo_reqheight() * len(self.setting_entry) + self.save.winfo_reqheight(),
                       self.root)
-
         self.root.mainloop()
 
     def on_close(self):

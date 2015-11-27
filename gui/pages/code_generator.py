@@ -1,41 +1,32 @@
-# -*- coding: utf-8 -*-
-import Tkinter
+
 import datetime
 import itertools
 import re
+import Tkinter
+from config import UPPER_LATIN, LOWER_LATIN, UPPER_CYRILLIC, \
+    LOWER_CYRILLIC, UPPER_UKRANIAN, LOWER_UKRAINIAN, DIGITS, \
+    MAIN_PRINTABLE
 
 from config.default_settings import SETTINGS
 from gui.helpers.gui_helpers import center_window
-from config.localization import BUTTONS, LANGUAGE, LABELS, LOGS
+from config.localization import BUTTONS, LANGUAGE, LABELS, LOGS, HEADERS
 
 __author__ = 'a_draga'
 
 
 class GenerateCodesForm(object):
-    upper_latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    lower_latin = 'abcdefghijklmnopqrstuvwxyz'
-    upper_cyrillic = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'
-    lower_cyrillic = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя'
-    upper_ukranian = 'АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ'
-    lower_ukrainian = 'ґії'
-    digits = '0123456789'
-    main_printable = """!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"""
-
     def __init__(self, parent):
-
         self.parent = parent
         self.root = Tkinter.Tk()
-        self.root.title(LABELS['code_generator'][LANGUAGE])
+        self.root.title(HEADERS['code_generator'][LANGUAGE])
         self.root.focus_force()
         self.left_frame = Tkinter.Frame(self.root)
         self.left_frame.pack(side=Tkinter.LEFT)
 
         label = Tkinter.Label(self.left_frame, text=LABELS['symbols_to_generate'][LANGUAGE])
         label.pack(side=Tkinter.TOP, fill=Tkinter.X)
-
         self.letters_to_generate = Tkinter.Text(self.left_frame, font=("Helvetica", 12), height=10, width=30)
         self.letters_to_generate.pack(side=Tkinter.TOP)
-        # self.letters_to_generate.config(size=36)
 
         label_reg = Tkinter.Label(self.left_frame, text=LABELS['mask'][LANGUAGE])
         label_reg.pack(side=Tkinter.TOP, fill=Tkinter.X)
@@ -45,10 +36,10 @@ class GenerateCodesForm(object):
 
         label_length = Tkinter.Label(self.left_frame, text=LABELS['codes_length'][LANGUAGE])
         label_length.pack(side=Tkinter.TOP, fill=Tkinter.X)
-
         self.length_from = Tkinter.Entry(self.left_frame)
         self.length_from.insert(0, '1')
         self.length_from.pack(side=Tkinter.TOP, fill=Tkinter.X)
+
         self.length_to = Tkinter.Entry(self.left_frame)
         self.length_to.insert(0, '1')
         self.length_to.pack(side=Tkinter.TOP, fill=Tkinter.X)
@@ -65,37 +56,45 @@ class GenerateCodesForm(object):
         self.preview_box.config(yscrollcommand=self.scroll_bar.set)
         self.preview_box.pack(side=Tkinter.TOP)
 
-        upper_latin_button = Tkinter.Button(self.root, text=BUTTONS['add_latin'][LANGUAGE],
+        upper_latin_button = Tkinter.Button(self.root,
+                                            text=BUTTONS['add_latin'][LANGUAGE],
                                             command=self.add_upper_latin)
-        # lower_latin_button = Tkinter.Button(self.root, text='Add Lower latin', command=self.add_lower_latin)
-        upper_cyrillic_button = Tkinter.Button(self.root, text=BUTTONS['add_cyrillic'][LANGUAGE],
+        upper_cyrillic_button = Tkinter.Button(self.root,
+                                               text=BUTTONS['add_cyrillic'][LANGUAGE],
                                                command=self.add_upper_cyrillic)
-        # lower_cyrillic_button = Tkinter.Button(self.root, text='Add Lower cyrillic', command=self.add_lower_cyrillic)
-        upper_ukrainian_button = Tkinter.Button(self.root, text=BUTTONS['add_ukrainian'][LANGUAGE],
+        upper_ukrainian_button = Tkinter.Button(self.root,
+                                                text=BUTTONS['add_ukrainian'][LANGUAGE],
                                                 command=self.add_upper_ukrainian)
-        # lower_ukrainian_button = Tkinter.Button(self.root, text='Add Lower ukrainian', command=self.add_lower_ukrainian)
-        digits_button = Tkinter.Button(self.root, text=BUTTONS['add_digits'][LANGUAGE], command=self.add_digits)
-        punctuation_latin_button = Tkinter.Button(self.root, text=BUTTONS['add_symbols'][LANGUAGE],
+        digits_button = Tkinter.Button(self.root,
+                                       text=BUTTONS['add_digits'][LANGUAGE],
+                                       command=self.add_digits)
+        punctuation_latin_button = Tkinter.Button(self.root,
+                                                  text=BUTTONS['add_symbols'][LANGUAGE],
                                                   command=self.add_printable)
 
         upper_latin_button.pack(side=Tkinter.TOP, fill=Tkinter.X)
-        # lower_latin_button.pack(side=Tkinter.TOP, fill=Tkinter.X)
         upper_cyrillic_button.pack(side=Tkinter.TOP, fill=Tkinter.X)
-        # lower_cyrillic_button.pack(side=Tkinter.TOP, fill=Tkinter.X)
         upper_ukrainian_button.pack(side=Tkinter.TOP, fill=Tkinter.X)
-        # lower_ukrainian_button.pack(side=Tkinter.TOP, fill=Tkinter.X)
         digits_button.pack(side=Tkinter.TOP, fill=Tkinter.X)
         punctuation_latin_button.pack(side=Tkinter.TOP, fill=Tkinter.X)
 
-        preview = Tkinter.Button(self.root, text=BUTTONS['preview'][LANGUAGE], command=self.preview)
+        preview = Tkinter.Button(self.root,
+                                 text=BUTTONS['preview'][LANGUAGE],
+                                 command=self.preview)
         preview.pack(side=Tkinter.BOTTOM, fill=Tkinter.X)
-        add_button = Tkinter.Button(self.root, text=BUTTONS['add_codes'][LANGUAGE], command=self.add_codes)
+        add_button = Tkinter.Button(self.root,
+                                    text=BUTTONS['add_codes'][LANGUAGE],
+                                    command=self.add_codes)
         add_button.pack(side=Tkinter.BOTTOM, fill=Tkinter.X)
-        cancel_button = Tkinter.Button(self.root, text=BUTTONS['cancel'][LANGUAGE], command=self.on_close)
+        cancel_button = Tkinter.Button(self.root,
+                                       text=BUTTONS['cancel'][LANGUAGE],
+                                       command=self.on_close)
         cancel_button.pack(side=Tkinter.BOTTOM, fill=Tkinter.X)
 
-        total_height = self.letters_to_generate.winfo_reqheight() + self.preview_box.winfo_reqheight() + \
-                       self.regex.winfo_reqheight() * 3 + label.winfo_reqheight() * 4
+        total_height = self.letters_to_generate.winfo_reqheight() + \
+            self.preview_box.winfo_reqheight() + \
+            self.regex.winfo_reqheight() * 3 + \
+            label.winfo_reqheight() * 4
 
         total_width = self.preview_box.winfo_reqwidth() + add_button.winfo_reqwidth()
 
@@ -127,28 +126,28 @@ class GenerateCodesForm(object):
         return filter(regular.match, codes)
 
     def add_upper_latin(self):
-        self.letters_to_generate.insert(Tkinter.END, self.upper_latin)
+        self.letters_to_generate.insert(Tkinter.END, UPPER_LATIN)
 
     def add_lower_latin(self):
-        self.letters_to_generate.insert(Tkinter.END, self.lower_latin)
+        self.letters_to_generate.insert(Tkinter.END, LOWER_LATIN)
 
     def add_upper_cyrillic(self):
-        self.letters_to_generate.insert(Tkinter.END, self.upper_cyrillic)
+        self.letters_to_generate.insert(Tkinter.END, UPPER_CYRILLIC)
 
     def add_lower_cyrillic(self):
-        self.letters_to_generate.insert(Tkinter.END, self.lower_cyrillic)
+        self.letters_to_generate.insert(Tkinter.END, LOWER_CYRILLIC)
 
     def add_upper_ukrainian(self):
-        self.letters_to_generate.insert(Tkinter.END, self.upper_ukranian)
+        self.letters_to_generate.insert(Tkinter.END, UPPER_UKRANIAN)
 
     def add_lower_ukrainian(self):
-        self.letters_to_generate.insert(Tkinter.END, self.lower_ukrainian)
+        self.letters_to_generate.insert(Tkinter.END, LOWER_UKRAINIAN)
 
     def add_digits(self):
-        self.letters_to_generate.insert(Tkinter.END, self.digits)
+        self.letters_to_generate.insert(Tkinter.END, DIGITS)
 
     def add_printable(self):
-        self.letters_to_generate.insert(Tkinter.END, self.main_printable)
+        self.letters_to_generate.insert(Tkinter.END, MAIN_PRINTABLE)
 
     def preview(self):
         letters = self.letters_to_generate.get("0.0", Tkinter.END)

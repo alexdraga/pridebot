@@ -1,11 +1,4 @@
 # -*- coding: utf-8 -*-
-__author__ = 'a_draga'
-
-from web.actions import QuestUA
-from gui.main import MainForm
-
-# game = QuestUA()
+from gui.pages.main import MainForm
 
 main_form = MainForm()
-# main_form.root.mainloop()
-main_form.write_config()

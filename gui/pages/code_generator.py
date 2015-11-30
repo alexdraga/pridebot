@@ -1,4 +1,3 @@
-
 import datetime
 import itertools
 import re
@@ -10,8 +9,6 @@ from config import UPPER_LATIN, LOWER_LATIN, UPPER_CYRILLIC, \
 from config.default_settings import SETTINGS
 from gui.helpers.gui_helpers import center_window
 from config.localization import BUTTONS, LANGUAGE, LABELS, LOGS, HEADERS
-
-__author__ = 'a_draga'
 
 
 class GenerateCodesForm(object):
@@ -92,9 +89,9 @@ class GenerateCodesForm(object):
         cancel_button.pack(side=Tkinter.BOTTOM, fill=Tkinter.X)
 
         total_height = self.letters_to_generate.winfo_reqheight() + \
-            self.preview_box.winfo_reqheight() + \
-            self.regex.winfo_reqheight() * 3 + \
-            label.winfo_reqheight() * 4
+                       self.preview_box.winfo_reqheight() + \
+                       self.regex.winfo_reqheight() * 3 + \
+                       label.winfo_reqheight() * 4
 
         total_width = self.preview_box.winfo_reqwidth() + add_button.winfo_reqwidth()
 
@@ -108,7 +105,8 @@ class GenerateCodesForm(object):
         self.parent.root.deiconify()
         self.root.destroy()
 
-    def get_all_combinations(self, letters, length):
+    @staticmethod
+    def get_all_combinations(letters, length):
         def join_elements(elements):
             joined = ''
             for element in elements:
@@ -121,7 +119,8 @@ class GenerateCodesForm(object):
             new_elements.append(join_elements(t))
         return new_elements
 
-    def filter_by_regex(self, codes, regex):
+    @staticmethod
+    def filter_by_regex(codes, regex):
         regular = re.compile(regex)
         return filter(regular.match, codes)
 
@@ -166,8 +165,8 @@ class GenerateCodesForm(object):
             time_started = datetime.datetime.now()
             codes_generated = 0
             if length_to and length_from:
-                if (self.number_of_codes(letters, length_to) < int(SETTINGS['limit_code_number'][0])) or \
-                                int(SETTINGS['limit_code_number'][0]) == 0:
+                if (self.number_of_codes(letters, length_to) < int(SETTINGS['limit_code_number'][0])) \
+                        or int(SETTINGS['limit_code_number'][0]) == 0:
                     self.preview_box.delete("0.0", Tkinter.END)
                     for length in range(length_from, length_to + 1):
                         codes = self.get_all_combinations(letters, length)
@@ -183,7 +182,8 @@ class GenerateCodesForm(object):
                     print LOGS["limit_exceeded"][LANGUAGE] % (
                         str(self.number_of_codes(letters, length_to)), SETTINGS['limit_code_number'][0])
 
-    def number_of_codes(self, letters, length):
+    @staticmethod
+    def number_of_codes(letters, length):
         symbol_number = len(letters)
         length = int(length)
         return pow(symbol_number, length)

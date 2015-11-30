@@ -95,7 +95,7 @@ class Quest(object):
                                           SETTINGS['code_alt_locator'][0]])
         if isinstance(code_field, WebElement):
             time_to_sleep = float(SETTINGS['time_interval'][0]) + \
-                random.uniform(0, float(SETTINGS['random_part'][0]))
+                            random.uniform(0, float(SETTINGS['random_part'][0]))
             if time_to_sleep:
                 print LOGS['waiting_before_next_code'][LANGUAGE] % str(time_to_sleep)
                 time.sleep(time_to_sleep)

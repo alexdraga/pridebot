@@ -103,7 +103,7 @@ class AnagramForm(object):
 
         width = label_letters.winfo_reqwidth() + self.letters.winfo_reqwidth()
         height = self.length.winfo_reqheight() * 3 + label_db.winfo_reqheight() + \
-            self.preview_box.winfo_reqheight() + add_button.winfo_reqheight()
+                 self.preview_box.winfo_reqheight() + add_button.winfo_reqheight()
         center_window(width,
                       height, self.root)
 
@@ -119,21 +119,14 @@ class AnagramForm(object):
         if letters:
             database = path.join(DATABASES_FOLDER, default_settings.selected)
             db = DBDriver(database)
+            time_started = datetime.datetime.now()
             if self.strict_order.get():
-                time_started = datetime.datetime.now()
                 results = db.do_anagram_strict_order(letters, self.length.get())
-                time_finished = datetime.datetime.now()
             else:
-                if self.length.get():
-                    time_started = datetime.datetime.now()
-                    results = db.do_anagram(letters, self.length.get())
-                    time_finished = datetime.datetime.now()
-                else:
-                    time_started = datetime.datetime.now()
-                    results = db.do_anagram(letters)
-                    time_finished = datetime.datetime.now()
+                results = db.do_anagram(letters, self.length.get())
+            time_finished = datetime.datetime.now()
             self.preview_box.delete("0.0", Tkinter.END)
-            if results:
+            if len(results):
                 print LOGS["codes_found"][LANGUAGE] % (
                     len(results), str((time_finished - time_started).seconds))
                 if self.use_mask.get():
@@ -152,10 +145,12 @@ class AnagramForm(object):
         self.parent.codes.insert(Tkinter.END, generated_codes)
         self.on_close()
 
-    def filter_by_regex(self, codes, regex):
+    @staticmethod
+    def filter_by_regex(codes, regex):
         regular = re.compile(regex)
         return filter(regular.match, codes)
 
-    def help(self):
+    @staticmethod
+    def help():
         message = HELPERS['anagram'][LANGUAGE]
         tkMessageBox.showinfo(title="Help", message=message)

@@ -1,6 +1,3 @@
-__author__ = 'a_draga'
-
-
 def center_window(w, h, root):
     # get screen width and height
     ws = root.winfo_screenwidth()

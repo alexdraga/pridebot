@@ -73,7 +73,7 @@ class DBDriver(object):
     def perform_strict_order(self, letters, length=None, table='words', field='word'):
         if letters:
             low_level_script = \
-                "SELECT {field} FROM {table} WHERE {field} like'{letters}'".format(
+                u"SELECT {field} FROM {table} WHERE {field} like'{letters}'".format(
                     field=field,
                     table=table,
                     letters=self.prepare_strict_order(letters))

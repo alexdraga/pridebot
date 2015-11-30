@@ -43,6 +43,9 @@ class MainForm(object):
         self.copy_to_clipboard = Tkinter.Button(self.root,
                                                 text=BUTTONS['copy_codes'][LANGUAGE],
                                                 command=self.copy_to_clipboard)
+        self.copy_from_clipboard = Tkinter.Button(self.root,
+                                                  text=BUTTONS['paste_codes'][LANGUAGE],
+                                                  command=self.copy_from_clipboard)
         self.clear_codes = Tkinter.Button(self.root,
                                           text=BUTTONS['clear'][LANGUAGE],
                                           command=self.clear_codes)
@@ -53,6 +56,7 @@ class MainForm(object):
         self.frame.pack(fill=Tkinter.BOTH, expand=Tkinter.YES)
         self.start_brute_force.pack(side=Tkinter.RIGHT)
         self.random_check_box.pack(side=Tkinter.RIGHT)
+        self.copy_from_clipboard.pack(side=Tkinter.RIGHT)
         self.copy_to_clipboard.pack(side=Tkinter.RIGHT)
         self.settings.pack(side=Tkinter.LEFT)
         self.code_generator.pack(side=Tkinter.LEFT)
@@ -146,19 +150,22 @@ class MainForm(object):
         self.codes.delete("0.0", Tkinter.END)
 
     def copy_to_clipboard(self):
-        self.codes.insert(Tkinter.END, self.root.clipboard_get())
         self.root.clipboard_clear()
         codes = self.codes.get("0.0", Tkinter.END)
         self.root.clipboard_append(codes)
 
     def copy_from_clipboard(self):
-        self.codes.insert(Tkinter.END, self.root.clipboard_get())
+        try:
+            self.codes.insert(Tkinter.END, self.root.clipboard_get())
+        except Tkinter.TclError:
+            print LOGS["nothing_to_insert"][LANGUAGE]
 
     # endregion
 
     def start_brute_force(self):
         codes = self.codes.get("0.0", Tkinter.END).split('\n')
-        if codes != ['', ''] and codes != [''] and codes:
+        codes = [code for code in codes if code != '']
+        if len(codes):
             time_started = datetime.datetime.now()
             # Hiding main GUI form
             self.root.withdraw()
@@ -167,18 +174,16 @@ class MainForm(object):
             if quest.is_url_opened:
                 if quest.is_login_performed:
                     codes_tried = 0
-
                     if self.enter_codes_randomly.get():
                         random.shuffle(codes)
                     for code in codes:
-                        if code != '':
-                            print LOGS["trying_code"][LANGUAGE] % code
-                            if quest.check_code(code):
-                                codes_tried += 1
-                            else:
-                                # check_code returns False or None only if firefox was closed etc.
-                                print LOGS["error_occurred_stopping"][LANGUAGE]
-                                break
+                        print LOGS["trying_code"][LANGUAGE] % code
+                        if quest.check_code(code) not in [False, 'STOP']:
+                            codes_tried += 1
+                        else:
+                            # check_code returns False or None only if firefox was closed etc.
+                            print LOGS["error_occurred_stopping"][LANGUAGE]
+                            break
                     time_finished = datetime.datetime.now()
                     print LOGS["codes_tried"][LANGUAGE] % (
                         codes_tried, str((time_finished - time_started).seconds))

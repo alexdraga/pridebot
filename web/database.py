@@ -63,12 +63,12 @@ class DBDriver(object):
             keys = letters_split.keys()
             for key in range(1, len(keys)):
                 low_level_script = \
-                u"SELECT {field} FROM ({low_level_script}) WHERE {field} LIKE'{letters}'".format(
-                    field=field,
-                    low_level_script=low_level_script,
-                    letters=self.prepare_multi_letter(
-                        letters_split.keys()[key],
-                        letters_split[letters_split.keys()[key]]))
+                    u"SELECT {field} FROM ({low_level_script}) WHERE {field} LIKE'{letters}'".format(
+                        field=field,
+                        low_level_script=low_level_script,
+                        letters=self.prepare_multi_letter(
+                            letters_split.keys()[key],
+                            letters_split[letters_split.keys()[key]]))
             if length in ['0', '=0', '=']:
                 low_level_script += " AND LEN(word)=%s" % str(len(letters))
             elif length is not None:

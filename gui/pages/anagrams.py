@@ -121,16 +121,16 @@ class AnagramForm(object):
             db = DBDriver(database)
             if self.strict_order.get():
                 time_started = datetime.datetime.now()
-                results = db.perform_strict_order(letters, self.length.get())
+                results = db.do_anagram_strict_order(letters, self.length.get())
                 time_finished = datetime.datetime.now()
             else:
                 if self.length.get():
                     time_started = datetime.datetime.now()
-                    results = db.perform_anagramm(letters, self.length.get())
+                    results = db.do_anagram(letters, self.length.get())
                     time_finished = datetime.datetime.now()
                 else:
                     time_started = datetime.datetime.now()
-                    results = db.perform_anagramm(letters)
+                    results = db.do_anagram(letters)
                     time_finished = datetime.datetime.now()
             self.preview_box.delete("0.0", Tkinter.END)
             if results:
